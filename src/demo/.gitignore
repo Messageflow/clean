@@ -1,0 +1,13 @@
+# Every files inside every directory and subdirectory
+src/demo/.temp/**/*.*
+
+# Every folders
+src/demo/.temp/demo/
+src/demo/.temp/dist/
+src/demo/.temp/node_modules/
+src/demo/.temp/test/
+src/demo/.temp/tests/
+
+# But skip these
+!src/demo/.temp/index.js
+!src/demo/.temp/index.d.ts
