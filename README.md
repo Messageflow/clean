@@ -22,19 +22,19 @@
 [![codebeat-badge]][codebeat-url]
 [![codacy-badge]][codacy-url]
 
-> Better greeting message
+> Yet another opinionated cleaning tool to reset a working directory by deleting files/ folders that are ignored by default via `.gitignore`.
 
 ## Table of contents
 
-- [Pre-requisite](#pre-requisite)
+- [Pre-requisites](#pre-requisites)
 - [Setup](#setup)
   - [Install](#install)
   - [Usage](#usage)
     - [Node.js](#nodejs)
     - [Native ES modules or TypeScript](#native-es-modules-or-typescript)
 - [API Reference](#api-reference)
-  - [greeting(name)](#greetingname)
-  - [greetingSync(name)](#greetingsyncname)
+  - [IGNORE_PATH](#ignorepath)
+  - [clean([options])](#cleanoptions)
 - [License](#license)
 
 ## Pre-requisites
@@ -56,7 +56,26 @@ $ npm install --save @messageflow/clean
 #### Node.js
 
 ```js
-const greeting = require('@messageflow/clean');
+const {
+  clean,
+  // IGNORE_PATH,
+} = require('@messageflow/clean');
+
+void async function main() {
+  const d = await clean();
+
+  console.log(d);
+  // The output might vary as it depends on the files/ folders that have been actually deleted from your system.
+  // [
+  //   'coverage',
+  //   'dist',
+  //   'index.d.ts',
+  //   'index.js',
+  //   'json.d.ts',
+  //   'node_modules',
+  //   'test',
+  // ]
+}();
 ```
 
 #### Native ES modules or TypeScript
@@ -64,19 +83,63 @@ const greeting = require('@messageflow/clean');
 ```ts
 // @ts-check
 
-import greeting from '@messageflow/clean';
+import {
+  clean,
+  // IGNORE_PATH,
+} from '@messageflow/clean';
+
+void async function main() {
+  const d = await clean();
+
+  console.log(d);
+  // The output might vary as it depends on the files/ folders that have been actually deleted from your system.
+  // [
+  //   'coverage',
+  //   'dist',
+  //   'index.d.ts',
+  //   'index.js',
+  //   'json.d.ts',
+  //   'node_modules',
+  //   'test',
+  // ]
+}();
 ```
 
 ## API Reference
 
-### greeting(name)
+### IGNORE_PATH
 
-- `name` <[string][string-mdn-url]> Name of the person to greet at.
-- returns: <[Promise][promise-mdn-url]&lt;[string][string-mdn-url]&gt;> Promise which resolves with a greeting message.
+```http
+.build/,
+.DS_Store,
+.esm-cache,
+.nyc_output,
+.tmp/,
+.vscode,
+npm-debug.log*,
+yarn-error.log*,
+coverage*/,
+dist*/,
+node_modules/,
+test*/,
+**/*.d.ts*,
+**/*.js,
+**/*.jsx,
+!/gulpfile*.js,
+!src/demo/*.*,
+!src/json.d.ts,
+!src/test*/,
+```
 
-### greetingSync(name)
+___
 
-This methods works the same as `greeting(name)` except that this is the synchronous version.
+### clean([options])
+
+- `options` <[Object][object-mdn-url]> Optional configuration to delete files/ folders.
+  - `gitConfig` <[string][string-mdn-url]> Optional path to `.gitignore`. Defaults to `./.gitignore`.
+  - `path` <[string][string-mdn-url]|[string][string-mdn-url][]> Optional glob pattern(s) to delete files/ folders. Defaults to [IGNORE_PATH][ignore-path-url].
+  - `options` <[Object][object-mdn-url]> Optional configuration from the [NPM][npm-url] package [del][del-url]. See [del options][del-options-url].
+- returns: <[Promise][promise-mdn-url]&lt;[string][string-mdn-url][]&gt;> Promise which resolves with a list of deleted files/ folders.
 
 ## License
 
@@ -87,6 +150,10 @@ This methods works the same as `greeting(name)` except that this is the synchron
 [nodejs-url]: https://nodejs.org
 [npm-url]: https://www.npmjs.com
 [node-releases-url]: https://nodejs.org/en/download/releases
+
+[ignore-path-url]: #ignore-path
+[del-url]: https://github.com/sindresorhus/del
+[del-options-url]: https://github.com/sindresorhus/del#options
 
 [array-mdn-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 [boolean-mdn-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean

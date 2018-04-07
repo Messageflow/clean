@@ -1,6 +1,6 @@
 // @ts-check
 
-export declare interface DelParams {
+export declare interface CleanOptions {
   gitConfig?: string;
   path?: string | string[];
   options?: DelOptions;
@@ -35,21 +35,29 @@ export const IGNORE_PATH = [
   '!src/json.d.ts',
   '!src/test*/',
 ];
+/** NOTE: There are always files/ folders should not be deleted regardless. */
 export const REGEX_FILES_NOT_IGNORE = /(\.git|\.env)/i;
 
-export async function readFrom(path: string, encoding: string) {
-  return promisify(readFile)(path, encoding);
+async function readFrom(filePath: string, encoding: string) {
+  return promisify(readFile)(filePath, encoding);
 }
 
-export async function readGitConfig(gitConfig: string) {
-  const configContent = await readFrom(gitConfig, 'utf-8');
-  const globsFromContent = configContent.split(/\r?\n/i).reduce((p, n) => {
-    if (/^(#.+|$)/i.test(n)) {
+async function globsReducer(allPaths: string[], omitFilesRegExp: RegExp) {
+  return allPaths.reduce((p, n) => {
+    if (/^(#.+|$)/i.test(n) || omitFilesRegExp.test(n)) {
       return p;
     }
 
     return p.concat(n);
   }, []);
+}
+
+async function readGitConfig(gitConfig: string) {
+  const configContent = await readFrom(gitConfig, 'utf-8');
+  const globsFromContent = await globsReducer(
+    configContent.split(/\r?\n/i),
+    REGEX_FILES_NOT_IGNORE
+  );
 
   return globsFromContent;
 }
@@ -58,15 +66,22 @@ export async function clean({
   gitConfig,
   path,
   options = {},
-} = {} as DelParams) {
+} = {} as CleanOptions) {
   const config = {
     gitConfig: gitConfig == null ? './.gitignore' : gitConfig,
-    path: path == null ? IGNORE_PATH : (Array.isArray(path) ? path : [path]),
+    path: path == null
+      ? IGNORE_PATH
+      : await globsReducer(
+        (Array.isArray(path) ? path : [path]),
+        REGEX_FILES_NOT_IGNORE
+      ),
   };
 
-  /** NOTE: Path will override whatever specifies in a given .gitignore */
+  /** NOTE: opts[path] will override whatever specifies in opts[gitConfig] */
   return del(
-    path == null ? await readGitConfig(config.gitConfig) : path,
+    path == null
+      ? await readGitConfig(config.gitConfig)
+      : config.path,
     { ...options }
   );
 }

@@ -27,6 +27,9 @@ describe('@messageflow/clean', () => {
             './src/demo/.temp/index.js',
           ];
         }
+        case '': {
+          return [];
+        }
         default: {
           return [
             'coverage',
@@ -124,7 +127,9 @@ describe('@messageflow/clean', () => {
       });
 
       expect(del).toHaveBeenCalledTimes(1);
-      expect(del).toHaveBeenCalledWith('**/src/demo/.temp/*.js', {});
+      expect(del).toHaveBeenCalledWith([
+        '**/src/demo/.temp/*.js',
+      ], {});
       expect(d).toEqual([
         './src/demo/.temp/index.js',
       ]);
@@ -159,12 +164,27 @@ describe('@messageflow/clean', () => {
         });
 
         expect(del).toHaveBeenCalledTimes(1);
-        expect(del).toHaveBeenCalledWith('**/src/demo/.temp/*.js', {});
+        expect(del).toHaveBeenCalledWith([
+          '**/src/demo/.temp/*.js',
+        ], {});
         expect(d).toEqual([
           './src/demo/.temp/index.js',
         ]);
       }
     );
+
+    test('[function clean] should not delete .git and *.env', async () => {
+      const d = await clean({
+        path: [
+          '.git',
+          '*.env',
+        ],
+      });
+
+      expect(del).toHaveBeenCalledTimes(1);
+      expect(del).toHaveBeenCalledWith([], {});
+      expect(d).toEqual([]);
+    });
 
   });
 });
