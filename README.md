@@ -33,7 +33,7 @@
     - [Node.js](#nodejs)
     - [Native ES modules or TypeScript](#native-es-modules-or-typescript)
 - [API Reference](#api-reference)
-  - [IGNORE_PATH](#ignorepath)
+  - [IGNORE_PATH](#ignore_path)
   - [clean([options])](#cleanoptions)
 - [License](#license)
 
