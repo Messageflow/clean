@@ -109,7 +109,7 @@ void async function main() {
 
 ### IGNORE_PATH
 
-```http
+```sh
 .build/,
 .DS_Store,
 .esm-cache,
@@ -151,7 +151,7 @@ ___
 [npm-url]: https://www.npmjs.com
 [node-releases-url]: https://nodejs.org/en/download/releases
 
-[ignore-path-url]: #ignore-path
+[ignore-path-url]: #ignore_path
 [del-url]: https://github.com/sindresorhus/del
 [del-options-url]: https://github.com/sindresorhus/del#options
 
