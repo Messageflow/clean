@@ -27,13 +27,17 @@ export const IGNORE_PATH = [
   '.vscode',
   'npm-debug.log*',
   'yarn-error.log*',
-  './test*/',
   'coverage*/',
   'dist*/',
   'node_modules/',
-  '*.d.ts*',
-  '*.js',
-  '*.jsx',
+  'test*/',
+  '**/*.d.ts*',
+  '**/*.js',
+  '**/*.jsx',
+  '!/gulpfile*.js',
+  '!src/demo/*.*',
+  '!src/json.d.ts',
+  '!src/test*/',
 ];
 export const REGEX_FILES_NOT_IGNORE = /(\.git|\.env)/i;
 
