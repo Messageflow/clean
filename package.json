@@ -1,10 +1,13 @@
 {
   "name": "@messageflow/clean",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
   "description": "Quick clean with del",
   "keywords": [
     "@messageflow/clean",
+    "clean",
+    "cleaning",
+    "del",
+    "delete",
     "node",
     "typescript"
   ],

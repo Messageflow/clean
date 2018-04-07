@@ -3,7 +3,6 @@
 **/*.*
 
 # Except these
-!**/json.d.ts
 !/*.d.ts
 !/*.js
 
