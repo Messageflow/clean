@@ -43,19 +43,19 @@ async function readFrom(filePath: string, encoding: string) {
 }
 
 async function globsReducer(allPaths: string[], omitFilesRegExp: RegExp) {
-  return allPaths.reduce((p, n) => {
-    if (/^(#.+|$)/i.test(n) || omitFilesRegExp.test(n)) {
+  return allPaths!.reduce<string[]>((p, n) => {
+    if (/^(#.+|$)/i.test(n) || omitFilesRegExp!.test(n)) {
       return p;
     }
 
-    return p.concat(n);
+    return p!.concat(n);
   }, []);
 }
 
 async function readGitConfig(gitConfig: string) {
   const configContent = await readFrom(gitConfig, 'utf-8');
   const globsFromContent = await globsReducer(
-    configContent.split(/\r?\n/i),
+    configContent!.split(/\r?\n/i),
     REGEX_FILES_NOT_IGNORE
   );
 
@@ -80,8 +80,8 @@ export async function clean({
   /** NOTE: opts[path] will override whatever specifies in opts[gitConfig] */
   return del(
     path == null
-      ? await readGitConfig(config.gitConfig)
-      : config.path,
+      ? await readGitConfig(config!.gitConfig)
+      : config!.path,
     { ...options }
   );
 }
