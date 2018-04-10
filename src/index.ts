@@ -30,7 +30,7 @@ export const IGNORE_PATH = [
   '**/*.d.ts*',
   '**/*.js',
   '**/*.jsx',
-  '!/gulpfile*.js',
+  '!gulpfile.js',
   '!src/demo/*.*',
   '!src/json.d.ts',
   '!src/test*/',

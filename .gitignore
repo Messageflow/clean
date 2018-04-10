@@ -23,7 +23,7 @@ test*/
 **/*.jsx
 
 # Do not ignore
-!**/gulpfile*.js
+!gulpfile.js
 !src/demo/*.*
 !src/json.d.ts
 !src/test*/
